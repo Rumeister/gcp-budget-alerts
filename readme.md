@@ -101,8 +101,8 @@ const data = JSON.stringify({
 {
 "header": {
     "title": `${budgetName}`,
-    "subtitle": "ruhan@sada.com",
-    "imageUrl": "https://storage.googleapis.com/logos/sada.png"
+    "subtitle": "ALERT",
+    "imageUrl": "https://storage.googleapis.com/logos/logo.png"
 },
 "sections": [
     {
