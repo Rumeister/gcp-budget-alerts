@@ -180,39 +180,14 @@ exports.process = async function process(event, context) {
     console.log('Zero diff check value: ',zerodiff[0].diff);
 
     if (zerodiff[0].diff > 0) {
-    // diffdata.forEach((row) => {        
-        // var diff = formatter.format(`${row.diff}`);
-        // var perc = formatter.format(`${row.percentile95}`);
-
-        // console.log('Cost Differential:',diff);
-        // console.log('Percentile Value: ',perc);
                 
         // NOTIFICATION
         // ============
         if (diff > perc) {
             console.log('99th Percentile exceeded!');
 
-            // const slackURL = 'https://hooks.slack.com/services/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';
-            // const emoticon = threshold >= 90 ? ':fire:' : ':ghost:'; 
-            // const link = `<https://console.cloud.google.com/billing/${billingAccountId}|Go to Console>`;
-            // notification = `:fire: ${link} *${budgetName}* :fire: \nYour billing account has exceeded the 99th percentile spend differential within the last hour.\n>The billing account has accrued ${costAmount} in costs so far for the month.\n>The last cost differential was ${formatter.format(diff)} which was higher than the percentile threshold of ${formatter.format(perc)}`;
-            
-            // const slackdata = JSON.stringify({
-            //     'text': notification,
-            // });
-
-            // // Post to Slack channel as per configured webhook
-            // fetch(slackURL, {
-            //     method: 'POST',
-            //     headers: {
-            //     'Content-Type': 'application/json; charset=UTF-8',
-            //     },
-            //     body: slackdata,
-            // });
-            // // Slack END
-
             // Google Chat Notification
-            const webhookURL = 'https://chat.googleapis.com/v1/spaces/AAAAQCspC8M/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=wvIfnFUAkylKr7XSJSZyaUqTZvcHiS37aFKA4ctQrK8%3D';
+            const webhookURL = '<YOUR WEBHOOK ENDPOINT>';
     
             // Construct a card notification
             const data = JSON.stringify({
@@ -220,8 +195,8 @@ exports.process = async function process(event, context) {
                             {
                             "header": {
                                 "title": `${budgetName}`,
-                                "subtitle": "ruhan@sada.com",
-                                "imageUrl": "https://storage.googleapis.com/logos-ruhanbudget-alerts/SADA_logo_shorthand_rev_rgb_blk.png"
+                                "subtitle": "ALERT",
+                                "imageUrl": "https://storage.googleapis.com/logos/logo.png"
                             },
                             "sections": [
                                 {
