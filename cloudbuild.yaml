@@ -1,0 +1,13 @@
+steps:
+
+  # Deploy the function
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - functions
+      - deploy
+      - --runtime=nodejs14
+      - --trigger-topic=<Your PubSub Topic>
+      - --region=northamerica-northeast1
+      - --source=./function-source/  # Function source files
+      - --entry-point=process # Function entry point
+      - budget-alerts # Function name

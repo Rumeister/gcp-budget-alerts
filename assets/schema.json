@@ -1,0 +1,42 @@
+[
+  {
+    "mode": "REQUIRED",
+    "name": "billingAccountId",
+    "type": "STRING"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "budgetName",
+    "type": "STRING"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "threshold",
+    "type": "NUMERIC"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "costAmount",
+    "type": "NUMERIC"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "budgetAmount",
+    "type": "NUMERIC"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "budgetAmountType",
+    "type": "STRING"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "currencyCode",
+    "type": "STRING"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "createdAt",
+    "type": "TIMESTAMP"
+  }
+]

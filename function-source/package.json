@@ -1,0 +1,8 @@
+{
+ "name": "gcp-billing-alerts",
+ "version": "0.0.1",
+  "dependencies": {
+  "@google-cloud/bigquery": "^2.0.6",
+  "@google-cloud/pubsub": "^0.18.0"
+  }
+}
