@@ -164,27 +164,6 @@ const data = JSON.stringify({
 ## Code walkthrough
 Yes, you can absolutely copy and paste the code, update the variables and be off to the races. That is the point of trying to keep things simple, however, I'd like to walk through the thought process and in particular, the anomaly detection pieces. The below section will reference extracted code from the ```index.js``` file. 
 
-```js
-const query = `SELECT count(*) cnt
-                FROM \`${PROJECT}.${DATASET}.${TABLE}\`
-                WHERE createdAt >  TIMESTAMP( DATE(EXTRACT(YEAR FROM CURRENT_DATE()) , EXTRACT(MONTH FROM CURRENT_DATE()), 1))
-                AND threshold = ${threshold} and billingAccountId = '${billingAccountId}'
-                `;
-    
-const options = {
-    query: query,
-    location: DATASET_LOCATION,
-};
-
-const [job] = await bigquery.createQueryJob(options);
-    
-// Wait for the query to finish
-const [results] = await job.getQueryResults();
-console.log('Count is: ',results[0].cnt);
-```
-> For each event, determine the count per threshold and billing account. This is done to ensure 
-only the first event per threshold and billing account will be emitted via webhook to Slack
-
 ### Anomaly detection
 The goal in this next section is to identify anomalous events within each billing account and prevent runaway spend. Let's break it down.
 
@@ -265,8 +244,8 @@ const diffquery = `SELECT
                             {
                             "header": {
                                 "title": `${budgetName}`,
-                                "subtitle": "ruhan@sada.com",
-                                "imageUrl": "https://storage.googleapis.com/logos/sada.png"
+                                "subtitle": "ALERT",
+                                "imageUrl": "https://storage.googleapis.com/logos/logo.png"
                             },
                             "sections": [
                                 {
@@ -348,10 +327,9 @@ if (results.length > 0 && results[0].cnt > 1 ){
     return;
 }  
 ```
-> For threshold related webhook messages, as mentioned earlier we do not want to be notified more than once per threshold and billing account within a month. The statement above evaluates whether or not this is the first entry for the month for a particular billing account and threshold. For example, it's the first of the month and the Pub/Sub event fires, creating an entry in your BigQuery dataset with X cost for threshold 0. You'll see a notification for this entry.
+> For threshold related webhook messages, we do not want to be notified more than once per threshold and billing account within a month. The statement above evaluates whether or not this is the first entry for the month for a particular billing account and threshold. For example, it's the first of the month and the Pub/Sub event fires, creating an entry in your BigQuery dataset with X cost for threshold 0. You'll see a notification for this entry.
 > 
-> 20 minutes later, another event fires with Y cost but still threshold 0 for the same account. The above logic prevents another notifcation from being posted for the same threshold level. When the threshold reaches 50 for the first time, you'd expect to see a new notification.
-
+> 20 minutes later, another event fires with Y cost but still threshold 0 for the same account. The above logic prevents another notifcation from being posted for the same threshold level.
 
 ## Resources
 
