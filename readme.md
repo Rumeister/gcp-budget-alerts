@@ -162,7 +162,7 @@ const data = JSON.stringify({
 
 
 ## Code walkthrough
-Yes, you can absolutely copy and paste the code, update the variables and be off to the races. That is the point of trying to keep things simple, however, I'd like to walk through the thought process and in particular, the anomaly detection pieces. The below section will reference extracted code from the ```index.js``` file. The complete function code can be found on sadasystems' [github](https://github.com/sadasystems/gcp-budget-alerting).
+Yes, you can absolutely copy and paste the code, update the variables and be off to the races. That is the point of trying to keep things simple, however, I'd like to walk through the thought process and in particular, the anomaly detection pieces. The below section will reference extracted code from the ```index.js``` file. 
 
 ```js
 const query = `SELECT count(*) cnt

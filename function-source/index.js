@@ -108,11 +108,6 @@ exports.process = async function process(event, context) {
 
     console.log('Average cost differential this month: ',rowdata[0].AverageSpend);
 
-    // rowdata.forEach((row) => {        
-    //     var avgspend = `${row.AverageSpend}`;
-    //     console.log('Average cost differential this month: ',avgspend);
-    // }); 
-
     // query3 calculates the percentile of the latest diff entry to determine if it should be flagged as a potential spike
     const query3 =  `SELECT 
                         budgetName,    
