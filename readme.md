@@ -47,6 +47,51 @@ This document will outline the process of configuring budget alerts to proactive
 		<img src="./assets/screenshot4.png">
 	</p>
 
+	```js
+	[
+	  {
+	    "mode": "REQUIRED",
+	    "name": "billingAccountId",
+	    "type": "STRING"
+	  },
+	  {
+	    "mode": "REQUIRED",
+	    "name": "budgetName",
+	    "type": "STRING"
+	  },
+	  {
+	    "mode": "REQUIRED",
+	    "name": "threshold",
+	    "type": "NUMERIC"
+	  },
+	  {
+	    "mode": "REQUIRED",
+	    "name": "costAmount",
+	    "type": "NUMERIC"
+	  },
+	  {
+	    "mode": "REQUIRED",
+	    "name": "budgetAmount",
+	    "type": "NUMERIC"
+	  },
+	  {
+	    "mode": "REQUIRED",
+	    "name": "budgetAmountType",
+	    "type": "STRING"
+	  },
+	  {
+	    "mode": "REQUIRED",
+	    "name": "currencyCode",
+	    "type": "STRING"
+	  },
+	  {
+	    "mode": "REQUIRED",
+	    "name": "createdAt",
+	    "type": "TIMESTAMP"
+	  }
+	]
+ 	```
+
 6. [Configure your Google chat](https://developers.google.com/hangouts/chat/quickstart/incoming-bot-node) for the incoming webhook
 
 7. Once your new budget has been created, navigate to Pub/Sub on the GCP console and select the topic you created earlier. 
