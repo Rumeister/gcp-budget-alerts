@@ -93,8 +93,18 @@ This document will outline the process of configuring budget alerts to proactive
  	```
 
 6. [Configure your Google chat](https://developers.google.com/hangouts/chat/quickstart/incoming-bot-node) for the incoming webhook
+> If you're using Slack, the configuration is similar. [Here is how to configure incoming webhooks on Slack](https://api.slack.com/messaging/webhooks)
 
-7. Once your new budget has been created, navigate to Pub/Sub on the GCP console and select the topic you created earlier. 
+7. To deploy your Cloud Function, there are two options:
+    1. Deploy programmatically via Cloud Shell or your local terminal/IDE
+    2. Deploy via the Google Cloud Console UI   
+
+### Deploy programmatically
+
+
+### Deploy via UI
+
+Once your new budget has been created, navigate to Pub/Sub on the GCP console and select the topic you created earlier. 
 
 	<p align=center>
 		<img src="./assets/screenshot3.png">
