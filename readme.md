@@ -26,7 +26,7 @@ This document will outline the process of configuring budget alerts to proactive
 	> It is recommended to uncheck discounts and promotions to enable tracking of total cost. The main reasoning behind that is for predictability with regards to spending patterns.
 
 2. Thresholds can be set according to your own requirements. A good starter formula would be to leverage 25% increments. 
-> Note that the real value lies in the anomaly detection engine, which is explained in one of the next sections.
+    > Note that the real value lies in the anomaly detection engine, which is explained in one of the next sections.
 
 
 3. For notifications, choose ```Connect a Pub/Sub topic to this budget``` and in the dropdown, create a new topic. The Pub/Sub topic can also be created prior to budget creation but is not necessary. In this step, make sure you choose the project where all resources are going to be deployed (Pub/Sub, Cloud Function etc.)
@@ -41,13 +41,13 @@ This document will outline the process of configuring budget alerts to proactive
 		<img src="./assets/screenshot2.png">
 	</p>
 
-5. 	Create a new BigQuery dataset and table with the below schema.
+5. Create a new BigQuery dataset and table with the below schema.
 
 	<p align=center>
 		<img src="./assets/screenshot4.png">
 	</p>
 
-	```js
+    ```js
 	[
 	  {
 	    "mode": "REQUIRED",
@@ -90,33 +90,74 @@ This document will outline the process of configuring budget alerts to proactive
 	    "type": "TIMESTAMP"
 	  }
 	]
- 	```
+     ```
 
 6. [Configure your Google chat](https://developers.google.com/hangouts/chat/quickstart/incoming-bot-node) for the incoming webhook
-> If you're using Slack, the configuration is similar. [Here is how to configure incoming webhooks on Slack](https://api.slack.com/messaging/webhooks)
+    > If you're using Slack, the configuration is similar. [Here is how to configure incoming webhooks on Slack](https://api.slack.com/messaging/webhooks)
 
 7. To deploy your Cloud Function, there are two options:
     1. Deploy programmatically via Cloud Shell or your local terminal/IDE
     2. Deploy via the Google Cloud Console UI   
 
-### Deploy programmatically
+    ### Deploy programmatically
 
+    1. Included in the source code, you will find a ```cloudbuild.yaml``` file. After making relevant changes to ```index.js``` (highlighted below) you only need to update the ```cloudbuild.yaml``` file according to your configuration and run the build via gcloud.
 
-### Deploy via UI
+	```js
+		// TODO: Developer to update these variables before deployment
+		//BigQuery variables
+		const DATASET = '<YOUR BIGQUERY DATASET>'
+		const TABLE = '<YOUR BIGQUERY TABLE>';
+		const PROJECT = '<YOUR GCP PROJECT>';
+		const DATASET_LOCATION = '<YOUR REGION>';
+	````
 
-Once your new budget has been created, navigate to Pub/Sub on the GCP console and select the topic you created earlier. 
+   ```js
+		// NOTIFICATION
+	        // ============
+	        if (diff > perc) {
+	            console.log('99th Percentile exceeded!');
+	
+	            // Google Chat Notification
+	            const webhookURL = '<YOUR WEBHOOK ENDPOINT>';
+    ```
+
+   cloudbuild.yaml
+   ```yaml
+	- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+	  args:
+	  - gcloud
+	  - functions
+	  - deploy
+	  - <your-function-name> # For example: my-budget-function
+	  - --region=us-central1 # Choose the region where you would like the function deployed
+	  - --source=./function-source/
+	  - --trigger-topic=<your pub/sub topic>
+	  - --entry-point=process # Function entry point  
+	  - --runtime=nodejs20
+   ```
+
+   After making these edits, simply run ```gcloud builds submit```, ensuring that your active project is the destination where you would like the function deployed to. To easily check which project you are working in, run ```gcloud config list```. Remember to correctly configure Cloud Build permissions prior to running the build. You can verify that [here](https://cloud.google.com/build/docs/deploying-builds/deploy-functions#before_you_begin)
+    
+    ### Deploy via UI
+
+    1. Once your new budget has been created, navigate to Pub/Sub on the GCP console and select the topic you created earlier. 
+
 
 	<p align=center>
 		<img src="./assets/screenshot3.png">
 	</p>
 
-Once selected, choose ``` "+ TRIGGER CLOUD FUNCTION" ```. Give your new function a name and choose the region where it should be deployed.
-> **RECOMMENDATION**
-> Choose the region that matches your project region to avoid cross-region network traffic. Pub/Sub budget notifications are triggered on average every ~30 minutes
+
+    2. Once selected, choose ``` "+ TRIGGER CLOUD FUNCTION" ```. Give your new function a name and choose the region where it should be deployed.
+        > **RECOMMENDATION**
+        > Choose the region that matches your project region to avoid cross-region network traffic. Pub/Sub budget notifications are triggered on average every ~30 minutes
 	
-Default configuration should be sufficient unless there are custom service accounts designated for triggering cloud functions. 
-	
-Finally, update your cloud function code to enable notifications to your IM channel of choice. Below are some examples for Slack and Google Chat.
+    Default configuration should be sufficient unless there are custom service accounts designated for triggering cloud functions. 
+
+
+    3. Finally, update your cloud function code to enable notifications to your IM channel of choice and align environment variables to your project and dataset. Comments are available inline with the codebase where updates are required. 
+        > Below are some examples for Slack and Google Chat IM integration.
 
 #### extract from index.js 
 
