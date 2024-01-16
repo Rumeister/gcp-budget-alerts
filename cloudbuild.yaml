@@ -1,13 +1,11 @@
-steps:
-
-  # Deploy the function
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args:
-      - functions
-      - deploy
-      - --runtime=nodejs14
-      - --trigger-topic=<Your PubSub Topic>
-      - --region=northamerica-northeast1
-      - --source=./function-source/  # Function source files
-      - --entry-point=process # Function entry point
-      - budget-alerts # Function name
+ - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+   args:
+   - gcloud
+   - functions
+   - deploy
+   - <your-function-name> # For example: my-budget-function
+   - --region=us-central1 # Choose the region where you would like the function deployed
+   - --source=./function-source/
+   - --trigger-topic=<your pub/sub topic>
+   - --entry-point=process # Function entry point  
+   - --runtime=nodejs20
